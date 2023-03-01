@@ -1,3 +1,6 @@
+#SET THE POLICY BELOW BEFORE RUNNING THE SCRIPT
+#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
