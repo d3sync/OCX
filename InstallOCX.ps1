@@ -11,7 +11,7 @@ else {
 }
 
 # Set the download link and local file path
-$downloadUrl = "https://datadesignsa-my.sharepoint.com/personal/a_patsouros_datadesignsa_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Fa%5Fpatsouros%5Fdatadesignsa%5Fonmicrosoft%5Fcom%2FDocuments%2FDeploys%2FOCX%2Ezip"
+$downloadUrl = "https://github.com/d3sync/OCX/blob/main/OCX.zip"
 $filePath = "$env:USERPROFILE\Downloads\OCX.zip"
 
 # Create a WebClient object to download the file
