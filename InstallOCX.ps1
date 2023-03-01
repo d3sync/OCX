@@ -1,5 +1,23 @@
 #SET THE POLICY BELOW BEFORE RUNNING THE SCRIPT
-#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+#Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+#RESET the policy back to default after.
+#Set-ExecutionPolicy -ExecutionPolicy Restricted
+
+#Get-ExecutionPolicy -List
+#
+#   * Restricted/Default:
+#    This is the default policy. You may not launch any script. The only possibility is to use PowerShell in ‘interactive mode’.
+#   * Allsigned:
+#    All the scripts that should be executed on the machine must be signed by a ‘Trusted Publisher’.
+#   * RemoteSigned:
+#    This concerns only the scripts that have been downloaded from the internet. These scripts must be signed by a ‘Trusted Publisher’.
+#   * Unrestricted:
+#    No constraints on the execution of scripts. All the scripts will be executed if you accept a warning message. I do not recommend it in a production environment.
+#   * Bypass:
+#    No blockage, no warning message. Everything is executed without control.
+#   * Undefined:
+#    Removes the currently assigned execution policy from the current scope. This parameter will not remove an execution policy that is set in a Group Policy scope.
+
 
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
