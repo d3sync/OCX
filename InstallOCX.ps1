@@ -4,6 +4,14 @@ $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 if ($isAdmin) {
     Write-Host "This script is running with administrative privileges."
+	if (Get-Module -ListAvailable -Name 7Zip4PowerShell) {
+    Write-Host "The 7Zip4PowerShell module is installed."
+} else {
+    Write-Host "The 7Zip4PowerShell module is not installed."
+	Install-Module 7Zip4PowerShell -Scope CurrentUser -Force -Verbose
+}
+
+    
 }
 else {
     Write-Host "This script requires administrative privileges to run."
@@ -11,14 +19,10 @@ else {
 }
 
 # Set the download link and local file path
-$downloadUrl = "https://github.com/d3sync/OCX/blob/main/OCX.zip"
+$downloadUrl = "http://datadesign.gr/Content/dist/OCX.zip"
 $filePath = "$env:USERPROFILE\Downloads\OCX.zip"
 
-# Create a WebClient object to download the file
-$client = New-Object System.Net.WebClient
-
-# Download the file and save it to the specified path
-$client.DownloadFile($downloadUrl, $filePath)
+Start-BitsTransfer -Source $downloadUrl -Destination $filePath
 
 # Check if the file was downloaded successfully
 if (-not (Test-Path $filePath)) {
@@ -28,15 +32,32 @@ if (-not (Test-Path $filePath)) {
 }
 
 # Extract the file to a folder with the same name as the file
-$extractPath = Split-Path -Path $filePath -Parent
-Expand-Archive -Path $filePath -DestinationPath $extractPath
+$extractPath = "$env:USERPROFILE\Downloads\OCX\"
+
+if (Test-Path $extractPath) {
+   
+    Write-Host "Folder Exists"
+    # Perform Delete file from folder operation
+}
+else
+{
+  
+    #PowerShell Create directory if not exists
+    New-Item $extractPath -ItemType Directory
+    Write-Host "Folder Created successfully"
+
+}
+Write-Host "Attempting to expand from $filepath to $extractPath"
+#Expand-Archive -Path $filePath -DestinationPath $extractPath
+
+Expand-7Zip -ArchiveFileName $filePath -TargetPath $extractPath -Verbose
+
 
 # Output a message indicating success
 Write-Host "File downloaded and extracted successfully."
 
-
 # Set the source and destination folder paths
-$sourcePath = "$env:USERPROFILE\Downloads\OCX"
+$sourcePath = "$env:USERPROFILE\Downloads\OCX\"
 $destPath = "C:\Windows\SysWow64"
 
 # Get all files with .OCX extension from the source folder
@@ -52,6 +73,7 @@ foreach ($file in $files) {
     $regsvr32Path = Join-Path $env:SystemRoot "SysWOW64\regsvr32.exe"
     $arg = "/s $($file.FullName)"
     & $regsvr32Path $arg
+	Write-Host "Registered: $file"
 }
 
 # Display a message for success
