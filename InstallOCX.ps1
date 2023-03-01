@@ -1,6 +1,5 @@
 #SET THE POLICY BELOW BEFORE RUNNING THE SCRIPT
 #Set-ExecutionPolicy -ExecutionPolicy Unrestricted
-#RESET the policy back to default after.
 #Set-ExecutionPolicy -ExecutionPolicy Restricted
 
 #Get-ExecutionPolicy -List
@@ -18,6 +17,11 @@
 #   * Undefined:
 #    Removes the currently assigned execution policy from the current scope. This parameter will not remove an execution policy that is set in a Group Policy scope.
 
+if (-not [Environment]::Is64BitOperatingSystem)
+{
+    Write-Error "This script requires a 64-bit operating system."
+    Exit
+}
 
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -99,3 +103,7 @@ foreach ($file in $files) {
 
 # Display a message for success
 Write-Host "All files copied and registered successfully."
+Remove-Item -Path $filePath -Recurse -Force
+Write-Host "Deleting archive: $filePath"
+
+Write-Host "All Done."
