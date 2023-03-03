@@ -137,10 +137,10 @@ Write-Host "Installing Fonts"
 foreach ($fontFile in $fonts) {
     $fontFilePath = $fontFile.FullName
     $fontDestinationPath = $env:windir + "\Fonts\" + $fontFile.Name
-    New-Item -ItemType File $fontDestinationPath -Force | Out-Null
-    Copy-Item $fontFilePath $fontDestinationPath -Force
+    #New-Item -ItemType File $fontDestinationPath -Force | Out-Null
+    #Copy-Item $fontFilePath $fontDestinationPath -Force
     #Invoke-Item $fontDestinationPath
-    	if(Test-Path -Path $targetPath){
+    	if(Test-Path -Path $fontDestinationPath){
 		$FontFile.Name + " already installed"
 	}
 	else {
