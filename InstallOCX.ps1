@@ -1,4 +1,4 @@
-Write-Host "Auto Installer Script v0.5"
+Write-Host "Auto Installer Script v0.6"
 #SET THE POLICY BELOW BEFORE RUNNING THE SCRIPT
 #Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 #Set-ExecutionPolicy -ExecutionPolicy Restricted
