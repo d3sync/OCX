@@ -29,12 +29,6 @@ $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 if ($isAdmin) {
     Write-Host "This script is running with administrative privileges."
-	#if (Get-Module -ListAvailable -Name 7Zip4PowerShell) {
-    	#	Write-Host "The 7Zip4PowerShell module is installed."
-	#} else {
-    	#	Write-Host "The 7Zip4PowerShell module is not installed."
-	#	Install-Module 7Zip4PowerShell -Scope CurrentUser -Force -Verbose
-	#}    
 }
 else {
     Write-Host "This script requires administrative privileges to run."
