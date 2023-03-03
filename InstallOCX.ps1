@@ -174,7 +174,7 @@ Write-Host "Deleting Folder: $extractPath2"
 Remove-Item -Path $extractPath2 -Recurse -Force
 $userInput = Read-Host "Create ODBC Record? 'yes' to continue"
 If ($userInput -eq "yes") {
-	Install-Module -Name SqlServer
+	Install-Module -Name SqlServer -Scope CurrentUser -Force -Verbose
 	$odbc = Read-Host "Please input the server ip/name"
 	if ($odbc -ne $null -and $odbc -ne "") {
 		Import-Module -Name "SQLServer"		
