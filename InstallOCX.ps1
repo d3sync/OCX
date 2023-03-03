@@ -1,8 +1,8 @@
-Write-Host "Auto Installer Script v0.7"
+Write-Host "Auto Installer Script v0.8"
 #SET THE POLICY BELOW BEFORE RUNNING THE SCRIPT
 #Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 #Set-ExecutionPolicy -ExecutionPolicy Restricted
-
+Start-Sleep -Seconds 5
 #Get-ExecutionPolicy -List
 #
 #   * Restricted/Default:
