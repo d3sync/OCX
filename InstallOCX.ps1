@@ -22,6 +22,8 @@ if (-not [Environment]::Is64BitOperatingSystem)
     Write-Error "This script requires a 64-bit operating system."
     Exit
 }
+[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") 
+[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") 
 $privateFontCollection = New-Object System.Drawing.Text.PrivateFontCollection
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
