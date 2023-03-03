@@ -178,7 +178,7 @@ If ($userInput -eq "yes") {
 	Import-Module -Name "SQLServer"	
 	$odbc = Read-Host "Please input the server ip/name"
 	if ($odbc -ne $null -and $odbc -ne "") {
-		New-ODBCDataSource -Name "DIAGBASE" -DsnType "SQL Server Native Client 11.0" -DriverPath "C:\Windows\System32\sqlncli11.dll" -SetPropertyValue @("Server=$odbc","Database=DIAGBASE","Trusted_Connection=yes;")
+		New-ODBCDataSource -Name "DIAGBASE" -DsnType "SQL Server Native Client 11.0" -DriverPath "C:\Windows\System32\sqlncli11.dll" -SetPropertyValue @("Server=$odbc","Database=DIAGBASE","Trusted_Connection=no;")
 	}
 }
 Write-Host "All Done."
