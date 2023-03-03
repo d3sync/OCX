@@ -114,6 +114,5 @@ Write-Host "Deleting archive: $filePath"
 Remove-Item -Path $filePath -Recurse -Force
 Write-Host "Deleting Folder: $extractPath"
 Remove-Item -Path $extractPath -Recurse -Force
-Write-Host "Deleting archive: $filePath"
 
 Write-Host "All Done."
