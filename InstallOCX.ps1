@@ -181,7 +181,7 @@ If ($userInput -eq "yes") {
 	$odbc = Read-Host "Please input the server ip/name"
 	if ($odbc -ne $null -and $odbc -ne "") {
 		if (Get-OdbcDsn -Name $dsnName -ErrorAction SilentlyContinue) {
- 		   Remove-OdbcDsn -Name $dsnName -Confirm:$false
+		   Remove-OdbcDsn -Name $dsnName -DsnType "User" -Confirm:$false
 		}
 		Add-OdbcDsn -Name $dsnName -DriverName $driverName -DsnType "User" -SetPropertyValue @("Server=$odbc", "Trusted_Connection=No", "Database=$dsnName")
 	}
