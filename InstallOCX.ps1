@@ -175,12 +175,15 @@ Write-Host "Deleting Folder: $extractPath2"
 Remove-Item -Path $extractPath2 -Recurse -Force
 $userInput = Read-Host "Create ODBC Record? 'yes' to continue"
 If ($userInput -eq "yes") {
+	$dsnName = "DIAGBASE"
+	$driverName = "SQL Server"
+	$databaseName = "DIAGBASE"
 	$odbc = Read-Host "Please input the server ip/name"
 	if ($odbc -ne $null -and $odbc -ne "") {
-		$dsnName = "DIAGBASE"
-		$driverName = "SQL Server"
-		$databaseName = "DIAGBASE"
-		Add-OdbcDsn -Name dsnName -DriverName $driverName -DsnType "User" -SetPropertyValue @("Server=$odbc", "Trusted_Connection=No", "Database=$dsnName")
+		if (Get-OdbcDsn -Name $dsnName -ErrorAction SilentlyContinue) {
+ 		   Remove-OdbcDsn -Name $dsnName -Confirm:$false
+		}
+		Add-OdbcDsn -Name $dsnName -DriverName $driverName -DsnType "User" -SetPropertyValue @("Server=$odbc", "Trusted_Connection=No", "Database=$dsnName")
 	}
 }
 Write-Host "All Done."
