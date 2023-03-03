@@ -180,7 +180,7 @@ If ($userInput -eq "yes") {
 		$dsnName = "DIAGBASE"
 		$driverName = "SQL Server"
 		$databaseName = "DIAGBASE"
-		Add-OdbcDsn -Name $dsnName -DriverName $driverName -ServerName $odbc -DatabaseName $databaseName
+		Add-OdbcDsn -Name dsnName -DriverName $driverName -DsnType "User" -SetPropertyValue @("Server=$odbc", "Trusted_Connection=No", "Database=$dsnName")
 	}
 }
 Write-Host "All Done."
