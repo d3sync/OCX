@@ -174,9 +174,9 @@ Write-Host "Deleting Folder: $extractPath2"
 Remove-Item -Path $extractPath2 -Recurse -Force
 $userInput = Read-Host "Create ODBC Record? 'yes' to continue"
 If ($userInput -eq "yes") {
+	Install-Module -Name SqlServer
 	$odbc = Read-Host "Please input the server ip/name"
 	if ($odbc -ne $null -and $odbc -ne "") {
-		Install-Module -Name SqlServer
 		Import-Module -Name "SQLServer"		
 		New-ODBCDataSource -Name "DIAGBASE" -DsnType "SQL Server Native Client 11.0" -DriverPath "C:\Windows\System32\sqlncli11.dll" -SetPropertyValue @("Server=$odbc","Database=DIAGBASE","Trusted_Connection=yes;")
 	}
