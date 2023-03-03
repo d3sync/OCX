@@ -22,9 +22,7 @@ if (-not [Environment]::Is64BitOperatingSystem)
     Write-Error "This script requires a 64-bit operating system."
     Exit
 }
-[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing") 
-[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") 
-$privateFontCollection = New-Object System.Drawing.Text.PrivateFontCollection
+
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -137,21 +135,28 @@ foreach ($file in $files) {
 $fonts = Get-ChildItem -Path $extractPath2 -Filter "*.ttf"
 Write-Host "Installing Fonts"
 foreach ($fontFile in $fonts) {
-    #$fontFilePath = $fontFile.FullName
-    #$fontDestinationPath = "C:\Windows\Fonts\" + $fontFile.Name
-    #New-Item -ItemType File $fontDestinationPath -Force | Out-Null
-    #Copy-Item $fontFilePath $fontDestinationPath -Force
+    $fontFilePath = $fontFile.FullName
+    $fontDestinationPath = $env:windir + "\Fonts\" + $fontFile.Name
+    New-Item -ItemType File $fontDestinationPath -Force | Out-Null
+    Copy-Item $fontFilePath $fontDestinationPath -Force
     #Invoke-Item $fontDestinationPath
-    # Load the font file into the PrivateFontCollection
-    $fontStream = [System.IO.File]::OpenRead($fontFile.FullName)
-    $fontBytes = [byte[]]::new($fontStream.Length)
-    $fontStream.Read($fontBytes, 0, $fontStream.Length)
-    $fontStream.Close()
-    $privateFontCollection.AddMemoryFont([IntPtr]::Zero, $fontBytes)
-
-    # Register the font with the system
-    $fontCollection = New-Object System.Drawing.Text.InstalledFontCollection
-    $fontCollection.AddFontFile($fontFile.FullName)
+    	if(Test-Path -Path $targetPath){
+		$FontFile.Name + " already installed"
+	}
+	else {
+		"Installing font " + $fontFile.Name
+		#Extract Font information for Reqistry
+		$ShellFolder = (New-Object -COMObject Shell.Application).Namespace($fontsPath)
+		$ShellFile = $shellFolder.ParseName($fontFile.name)
+		$ShellFileType = $shellFolder.GetDetailsOf($shellFile, 2)
+		#Set the $FontType Variable
+		If ($ShellFileType -Like '*TrueType font file*') {$FontType = '(TrueType)'}
+		#Update Registry and copy font to font directory
+		$RegName = $shellFolder.GetDetailsOf($shellFile, 21) + ' ' + $FontType
+		New-ItemProperty -Name $RegName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $fontFile.name -Force | out-null
+		Copy-item $fontFile.FullName -Destination $systemFontsPath
+		"Done"
+	}
 }
 Write-Host "Done installing fonts!"
 ########################################
