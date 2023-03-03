@@ -22,7 +22,7 @@ if (-not [Environment]::Is64BitOperatingSystem)
     Write-Error "This script requires a 64-bit operating system."
     Exit
 }
-
+$privateFontCollection = New-Object System.Drawing.Text.PrivateFontCollection
 # Check if the current user is an administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -135,11 +135,21 @@ foreach ($file in $files) {
 $fonts = Get-ChildItem -Path $extractPath2 -Filter "*.ttf"
 Write-Host "Installing Fonts"
 foreach ($fontFile in $fonts) {
-    $fontFilePath = $fontFile.FullName
-    $fontDestinationPath = "C:\Windows\Fonts\" + $fontFile.Name
-    New-Item -ItemType File $fontDestinationPath -Force | Out-Null
-    Copy-Item $fontFilePath $fontDestinationPath -Force
-    Invoke-Item $fontDestinationPath
+    #$fontFilePath = $fontFile.FullName
+    #$fontDestinationPath = "C:\Windows\Fonts\" + $fontFile.Name
+    #New-Item -ItemType File $fontDestinationPath -Force | Out-Null
+    #Copy-Item $fontFilePath $fontDestinationPath -Force
+    #Invoke-Item $fontDestinationPath
+    # Load the font file into the PrivateFontCollection
+    $fontStream = [System.IO.File]::OpenRead($fontFile.FullName)
+    $fontBytes = [byte[]]::new($fontStream.Length)
+    $fontStream.Read($fontBytes, 0, $fontStream.Length)
+    $fontStream.Close()
+    $privateFontCollection.AddMemoryFont([IntPtr]::Zero, $fontBytes)
+
+    # Register the font with the system
+    $fontCollection = New-Object System.Drawing.Text.InstalledFontCollection
+    $fontCollection.AddFontFile($fontFile.FullName)
 }
 Write-Host "Done installing fonts!"
 ########################################
