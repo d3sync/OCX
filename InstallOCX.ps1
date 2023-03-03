@@ -29,14 +29,12 @@ $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 if ($isAdmin) {
     Write-Host "This script is running with administrative privileges."
-	if (Get-Module -ListAvailable -Name 7Zip4PowerShell) {
-    Write-Host "The 7Zip4PowerShell module is installed."
-} else {
-    Write-Host "The 7Zip4PowerShell module is not installed."
-	Install-Module 7Zip4PowerShell -Scope CurrentUser -Force -Verbose
-}
-
-    
+	#if (Get-Module -ListAvailable -Name 7Zip4PowerShell) {
+    	#	Write-Host "The 7Zip4PowerShell module is installed."
+	#} else {
+    	#	Write-Host "The 7Zip4PowerShell module is not installed."
+	#	Install-Module 7Zip4PowerShell -Scope CurrentUser -Force -Verbose
+	#}    
 }
 else {
     Write-Host "This script requires administrative privileges to run."
@@ -73,10 +71,19 @@ else
 
 }
 Write-Host "Attempting to expand from $filepath to $extractPath"
-#Expand-Archive -Path $filePath -DestinationPath $extractPath
-
-Expand-7Zip -ArchiveFileName $filePath -TargetPath $extractPath -Verbose
-
+try {
+	Expand-Archive -Path $filePath -DestinationPath $extractPath
+    } catch {
+    Write-Host "Extraction failed. Trying alternative method..."
+    # Your alternative extraction method here
+    	if (Get-Module -ListAvailable -Name 7Zip4PowerShell) {
+    		Write-Host "The 7Zip4PowerShell module is installed."
+	} else {
+    		Write-Host "The 7Zip4PowerShell module is not installed."
+		Install-Module 7Zip4PowerShell -Scope CurrentUser -Force -Verbose
+	}    
+	Expand-7Zip -ArchiveFileName $filePath -TargetPath $extractPath -Verbose
+}
 
 # Output a message indicating success
 Write-Host "File downloaded and extracted successfully."
